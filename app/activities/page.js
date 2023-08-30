@@ -4,7 +4,7 @@ import Table from "./Table";
 async function Members() {
   let activities = [];
   try {
-    const response = await fetch(`${BACKEND_DOMAIN}/api/activities`, {
+    const response = await fetch(`${BACKEND_DOMAIN}/activities`, {
       cache: "no-store",
     });
     activities = await response.json();
