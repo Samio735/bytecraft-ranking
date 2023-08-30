@@ -23,35 +23,37 @@ function Sidebar() {
   };
   return (
     <div>
-      <IconButton
-        className={`2xl:hidden fixed  left-6 top-6 ${
-          openNav && "rotate-90"
-        }  z-50 p-4`}
-        onClick={() => setOpenNav(!openNav)}
-      >
-        <svg
-          class="w-6 h-text-white"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 17 14"
+      <div className="fixed z-50">
+        <IconButton
+          className={`2xl:hidden fixed  left-6 top-6 ${
+            openNav && "rotate-90"
+          }  z-50 p-4`}
+          onClick={() => setOpenNav(!openNav)}
         >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M1 1h15M1 7h15M1 13h15"
-          />
-        </svg>
-      </IconButton>
+          <svg
+            class="w-6 h-text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
+        </IconButton>
+      </div>
 
       <Card
         className={`h-[calc(100vh-2rem)]   ${
           !openNav && "-translate-x-[70vw]"
         } 2xl:translate-x-0 w-full  fixed max-w-[20rem] p-4 shadow-xl    z-40   shadow-blue-gray-900/5`}
       >
-        <div className="mb-2 p-4  hidden 2xl:block">
+        <div className="mb-2 p-4  invisible 2xl:block">
           <Typography variant="h5" color="blue-gray">
             Bytecraft
           </Typography>
