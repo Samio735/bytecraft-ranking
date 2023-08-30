@@ -171,7 +171,7 @@ function NewActivity({ loginState, activitiesDispatch }) {
               >
                 <Option value="meet">Meeting</Option>
                 <Option value="task">Task</Option>
-                <Option value="event-participation">Event Participation</Option>
+                <Option value="part">Event Participation</Option>
               </Select>
             </div>
             {newActivityState.type === "task" && (
