@@ -50,7 +50,7 @@ function Sidebar() {
 
       <Card
         className={`h-[calc(100vh-2rem)]   ${
-          !openNav && "-translate-x-[70vw]"
+          !openNav && "-translate-x-[100vw]"
         } 2xl:translate-x-0 w-full  fixed max-w-[20rem] p-4 shadow-xl    z-40   shadow-blue-gray-900/5`}
       >
         <div className="mb-2 p-4  invisible 2xl:block">
