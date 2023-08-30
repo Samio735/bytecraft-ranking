@@ -6,7 +6,7 @@ function Table({ members }) {
 
   return (
     <div className="flex justify-center items-center mb-6">
-      <Card className=" overflow-scroll max-w-2xl w-full mx-2 ">
+      <Card className=" overflow-scroll max-w-xl w-full mx-2 ">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
