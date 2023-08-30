@@ -12,6 +12,8 @@ import {
 import { useEffect, useReducer, useState } from "react";
 
 function Login({ loginDispatch, loginState, LoginReducer }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   async function login() {
     const response = await fetch(`${BACKEND_DOMAIN}/login/`, {
       method: "POST",
@@ -23,8 +25,11 @@ function Login({ loginDispatch, loginState, LoginReducer }) {
         password: loginState.password,
       }),
     });
-    const data = await response.json();
+    setIsLoading(true);
+    // wait 3 seconds
 
+    const data = await response.json();
+    setIsLoading(false);
     if (data.isLogedin) {
       loginDispatch({ type: "setIsLogedin", payload: true });
     }
@@ -33,7 +38,6 @@ function Login({ loginDispatch, loginState, LoginReducer }) {
       loginDispatch({ type: "setError", payload: data.error });
     }
   }
-
   return (
     <div>
       <form className="h-[80vh] flex items-center justify-center">
@@ -72,7 +76,7 @@ function Login({ loginDispatch, loginState, LoginReducer }) {
               e.preventDefault();
             }}
           >
-            Login
+            {!isLoading && "Login"} {isLoading && "loading"}
           </Button>
         </Card>
       </form>
