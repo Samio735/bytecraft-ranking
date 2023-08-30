@@ -8,6 +8,7 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { useEffect, useReducer, useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 
 function NewActivity({ loginState, activitiesDispatch }) {
   const [creatingNewActivity, setcreatingNewActivity] = useState(false);
@@ -31,6 +32,9 @@ function NewActivity({ loginState, activitiesDispatch }) {
       case "setPoints": {
         return { ...state, points: action.payload };
       }
+      case "setSending": {
+        return { ...state, sending: action.payload };
+      }
       case "reset": {
         return {
           name: "",
@@ -39,6 +43,7 @@ function NewActivity({ loginState, activitiesDispatch }) {
           time: "quick",
           points: 0,
           error: "",
+          sending: false,
         };
       }
       default:
@@ -54,6 +59,7 @@ function NewActivity({ loginState, activitiesDispatch }) {
       time: "quick",
       points: 0,
       error: "",
+      sending: false,
     }
   );
   const calculatePoints = () => {
@@ -102,8 +108,8 @@ function NewActivity({ loginState, activitiesDispatch }) {
       return;
     }
     newActivityDispatch({
-      type: "setError",
-      payload: "sending",
+      type: "setSending",
+      payload: true,
     });
     const response = await fetch(`${BACKEND_DOMAIN}/activities/`, {
       method: "POST",
@@ -225,8 +231,21 @@ function NewActivity({ loginState, activitiesDispatch }) {
 
             <div className="">Activity Points : {newActivityState.points}</div>
             <p className="text-red-400">{newActivityState.error}</p>
-            <Button className="mb-4" onClick={() => submit()}>
-              Create
+            <Button
+              className="mb-4"
+              disabled={newActivityState.sending}
+              onClick={() => submit()}
+            >
+              {!newActivityState.sending && "Create"}
+              {newActivityState.sending && (
+                <div className="w-full flex justify-center h-full ">
+                  <ThreeDots
+                    width={"40px"}
+                    height={"15px"}
+                    color="white"
+                  ></ThreeDots>
+                </div>
+              )}
             </Button>
           </Card>
           <div

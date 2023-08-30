@@ -1,5 +1,3 @@
-import { Card, Typography } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
 import PointsTable from "./PointsTable";
 
 function MembersLeaderboard({ loginState }) {
@@ -9,7 +7,9 @@ function MembersLeaderboard({ loginState }) {
         Your Department Rankings
       </h1>
       <div className="flex justify-center items-center mb-6">
-        <PointsTable members={loginState.members}></PointsTable>
+        {!loginState.membersLoading && (
+          <PointsTable members={loginState.members}></PointsTable>
+        )}
       </div>
     </div>
   );

@@ -8,8 +8,8 @@ import {
   IconButton,
   DialogFooter,
 } from "@material-tailwind/react";
-import Members from "./Members";
-import PointsTable from "./PointsTable";
+import { ThreeDots } from "react-loader-spinner";
+
 import AssignTable from "./AssignTable";
 import { useEffect, useReducer, useState } from "react";
 import NewActivity from "./NewActivity";
@@ -28,6 +28,9 @@ function Activities({ loginState, loginDispatch }) {
       case "setError": {
         return { ...state, error: action.payload };
       }
+      case "setisLoading": {
+        return { ...state, isLoading: action.payload };
+      }
       default:
         throw Error("Unknown action: " + action.type);
     }
@@ -36,6 +39,7 @@ function Activities({ loginState, loginDispatch }) {
   const [activitiesState, activitiesDispatch] = useReducer(ActivitiesReducer, {
     activities: [],
     currentActivity: {},
+    isLoading: false,
     error: "",
   });
 
@@ -124,8 +128,6 @@ function Activities({ loginState, loginDispatch }) {
   const [editingActivity, seteditingActivity] = useState(false);
 
   const [deleteOpen, setdeleteOpen] = useState(false);
-
-  const handledeleteOpen = () => (e) => setdeleteOpen(!deleteOpen);
 
   return (
     <div className="my-8">
@@ -258,7 +260,16 @@ function Activities({ loginState, loginDispatch }) {
 
               <div className="flex gap-2 w-full justify-end  ">
                 <Button onClick={() => seteditingActivity(false)}>
-                  Save And Continue{" "}
+                  {!activitiesState.isLoading && "SAVE AND CONTINUE"}{" "}
+                  {activitiesState.isLoading && (
+                    <div className="w-32 flex justify-center h-full ">
+                      <ThreeDots
+                        width={"40px"}
+                        height={"15px"}
+                        color="white"
+                      ></ThreeDots>
+                    </div>
+                  )}
                 </Button>
               </div>
             </Card>

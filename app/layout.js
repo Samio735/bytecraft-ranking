@@ -1,7 +1,5 @@
-import Image from "next/image";
 import "./globals.css";
 import Sidebar from "./Sidebar";
-import { NavbarSimple } from "./NavBar";
 
 export const metadata = {
   title: "Bytecraft Ranking System",

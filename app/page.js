@@ -1,19 +1,8 @@
 "use client";
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import Login from "./Login";
-import Members from "./Members";
 import Activities from "./Activities";
 import MembersLeaderboard from "./Members";
-import {
-  Card,
-  Chip,
-  List,
-  ListItem,
-  ListItemPrefix,
-  ListItemSuffix,
-  Typography,
-} from "@material-tailwind/react";
-import { getMembers } from "./functions";
 
 function page() {
   const LoginReducer = (state, action) => {
@@ -30,9 +19,12 @@ function page() {
       case "setError": {
         return { ...state, error: action.payload };
       }
-      case "setMembers":
+      case "setMembers": {
+        return { ...state, members: action.payload };
+      }
+      case "setMembersLoading":
         {
-          return { ...state, members: action.payload };
+          return { ...state, membersLaoding: action.payload };
         }
 
         throw Error("Unknown action: " + action.type);
@@ -44,8 +36,8 @@ function page() {
     password: "",
     error: "",
     members: [],
+    membersLaoding: false,
   });
-
   const ActivitiesReducer = (state, action) => {
     switch (action.type) {
       case "setActivities": {
@@ -56,14 +48,6 @@ function page() {
   const [activitiesState, activitiesDispatch] = useReducer(ActivitiesReducer, {
     activities: [],
   });
-
-  useEffect(() => {
-    if (loginState.isLogedin) {
-      getMembers(loginState.department).then((data) => {
-        loginDispatch({ type: "setMembers", payload: data.members });
-      });
-    }
-  }, [loginState.isLogedin, activitiesState.activities]);
 
   return (
     <div className="m-4 flex w-full flex-col items-center ">
@@ -77,13 +61,16 @@ function page() {
           ></Login>
         )}
         {loginState.isLogedin && (
-          <Activities
-            loginState={loginState}
-            loginDispatch={loginDispatch}
-          ></Activities>
-        )}
-        {loginState.isLogedin && (
-          <MembersLeaderboard loginState={loginState}></MembersLeaderboard>
+          <>
+            <Activities
+              loginState={loginState}
+              loginDispatch={loginDispatch}
+            ></Activities>
+
+            {!loginState.membersLaoding && (
+              <MembersLeaderboard loginState={loginState}></MembersLeaderboard>
+            )}
+          </>
         )}
       </div>
     </div>

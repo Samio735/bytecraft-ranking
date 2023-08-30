@@ -1,5 +1,5 @@
 import { BACKEND_DOMAIN } from "@/config";
-import { Card, Checkbox, Switch, Typography } from "@material-tailwind/react";
+import { Card, Switch, Typography } from "@material-tailwind/react";
 import { useEffect } from "react";
 
 function AssignTable({
@@ -11,6 +11,7 @@ function AssignTable({
   const TABLE_HEAD = ["Assign the acitvity to members", ""];
 
   async function assignMember(MemberId, ActivityId) {
+    activitiesDispatch({ type: "setisLoading", payload: true });
     const response = await fetch(`${BACKEND_DOMAIN}/assign-member/`, {
       method: "POST",
       headers: {
@@ -24,6 +25,7 @@ function AssignTable({
       }),
     });
     const data = await response.json();
+    activitiesDispatch({ type: "setisLoading", payload: false });
 
     if (data.error) {
       activitiesDispatch({ type: "setError", payload: data.error });
@@ -34,6 +36,8 @@ function AssignTable({
   }
 
   async function unassignMember(MemberId, ActivityId) {
+    activitiesDispatch({ type: "setisLoading", payload: true });
+
     const response = await fetch(`${BACKEND_DOMAIN}/unassign-member/`, {
       method: "POST",
       headers: {
@@ -46,7 +50,7 @@ function AssignTable({
         password: loginState.password,
       }),
     });
-    activitiesDispatch({ type: "setError", payload: "processing.." });
+    activitiesDispatch({ type: "setisLoading", payload: false });
     const data = await response.json();
     console.log(data);
     activitiesDispatch({ type: "setActivities", payload: data.activities });

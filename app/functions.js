@@ -1,10 +1,11 @@
 import { BACKEND_DOMAIN } from "@/config";
 
-export async function getMembers(department) {
+export async function getMembers(department, setLoading) {
   const response = await fetch(
     `${BACKEND_DOMAIN}/members/?department=${department}`
   );
   const data = await response.json();
+  if (setLoading) setLoading(false);
 
   return data;
 }

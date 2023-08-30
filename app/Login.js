@@ -3,39 +3,53 @@ import { BACKEND_DOMAIN } from "@/config";
 import {
   Button,
   Card,
-  Checkbox,
   Option,
   Select,
   Input,
   Typography,
 } from "@material-tailwind/react";
-import { useEffect, useReducer, useState } from "react";
+import { useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
+import { getMembers } from "./functions";
 
-function Login({ loginDispatch, loginState, LoginReducer }) {
+function Login({ loginDispatch, loginState }) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function login() {
-    const response = await fetch(`${BACKEND_DOMAIN}/login/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        department: loginState.department,
-        password: loginState.password,
-      }),
-    });
     setIsLoading(true);
-    // wait 3 seconds
+    try {
+      const response = await fetch(`${BACKEND_DOMAIN}/login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          department: loginState.department,
+          password: loginState.password,
+        }),
+      });
 
-    const data = await response.json();
-    setIsLoading(false);
-    if (data.isLogedin) {
-      loginDispatch({ type: "setIsLogedin", payload: true });
-    }
-    if (!data.isLogedin) {
-      loginDispatch({ type: "setIsLogedin", payload: false });
-      loginDispatch({ type: "setError", payload: data.error });
+      const data = await response.json();
+
+      setIsLoading(false);
+
+      if (data.isLogedin) {
+        loginDispatch({ type: "setIsLogedin", payload: true });
+        loginDispatch({ type: "setMembersLoading", payload: true });
+        const members = await getMembers(loginState.department);
+        loginDispatch({ type: "setMembers", payload: members.members });
+        loginDispatch({ type: "setMembersLoading", payload: false });
+      }
+      if (!data.isLogedin) {
+        loginDispatch({ type: "setIsLogedin", payload: false });
+        loginDispatch({ type: "setError", payload: data.error });
+      }
+    } catch (error) {
+      loginDispatch({
+        type: "setError",
+        payload: "Oups, Can't connect to sever",
+      });
+      setIsLoading(false);
     }
   }
   return (
@@ -69,6 +83,7 @@ function Login({ loginDispatch, loginState, LoginReducer }) {
             <p className="text-red-400">{loginState.error}</p>
           )}
           <Button
+            disabled={isLoading}
             type="submit"
             className="mt-4"
             onClick={(e) => {
@@ -76,7 +91,16 @@ function Login({ loginDispatch, loginState, LoginReducer }) {
               e.preventDefault();
             }}
           >
-            {!isLoading && "Login"} {isLoading && "loading"}
+            {!isLoading && "Login"}{" "}
+            {isLoading && (
+              <div className="w-full flex justify-center h-full ">
+                <ThreeDots
+                  width={"40px"}
+                  height={"15px"}
+                  color="white"
+                ></ThreeDots>
+              </div>
+            )}
           </Button>
         </Card>
       </form>
