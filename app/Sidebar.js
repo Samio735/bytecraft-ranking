@@ -1,13 +1,12 @@
 "use client";
+
 import React from "react";
 import {
   Card,
   Typography,
   List,
   ListItem,
-  ListItemPrefix,
   ListItemSuffix,
-  Chip,
   Accordion,
   AccordionHeader,
   AccordionBody,
