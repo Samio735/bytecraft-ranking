@@ -1,9 +1,10 @@
+import { BACKEND_DOMAIN } from "@/config";
 import Table from "./Table";
 
 async function Members() {
   let activities = [];
   try {
-    const response = await fetch(`http://127.0.0.1:9000/api/activities`, {
+    const response = await fetch(`${BACKEND_DOMAIN}/api/activities`, {
       cache: "no-store",
     });
     activities = await response.json();
