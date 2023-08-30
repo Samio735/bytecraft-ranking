@@ -10,25 +10,55 @@ import {
   Accordion,
   AccordionHeader,
   AccordionBody,
+  IconButton,
 } from "@material-tailwind/react";
 import Link from "next/link";
 
 function Sidebar() {
   const [open, setOpen] = React.useState(0);
+  const [openNav, setOpenNav] = React.useState(false);
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
   return (
     <div>
-      <div className="lg:w-[10vw]"></div>
-      <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl   hidden 2xl:block fixed shadow-blue-gray-900/5">
-        <div className="mb-2 p-4">
+      <IconButton
+        className={`xl:hidden fixed  left-6 top-6 ${
+          openNav && "rotate-90"
+        }  z-50 p-4`}
+        onClick={() => setOpenNav(!openNav)}
+      >
+        <svg
+          class="w-6 h-text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 17 14"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15"
+          />
+        </svg>
+      </IconButton>
+      <div className="w-[10vw]"></div>
+      <Card
+        className={`h-[calc(100vh-2rem)]   ${
+          !openNav && "-translate-x-[70vw]"
+        } ${
+          openNav && "-translate-x-0"
+        }  w-full  fixed max-w-[20rem] p-4 shadow-xl    z-40   shadow-blue-gray-900/5`}
+      >
+        <div className="mb-2 p-4  hidden xl:block">
           <Typography variant="h5" color="blue-gray">
             Bytecraft
           </Typography>
         </div>
-        <List>
+        <List className=" xl:block">
           <Link href={"/"}>
             <ListItem>Dashboard</ListItem>
           </Link>
