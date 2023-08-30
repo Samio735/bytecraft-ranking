@@ -73,7 +73,7 @@ function NewActivity({ loginState, activitiesDispatch }) {
         points = points + 10;
       }
     }
-    if (newActivityState.type === "event-participation") {
+    if (newActivityState.type === "part") {
       points = 30;
     }
     return points;
