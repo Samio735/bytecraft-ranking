@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <body className="  w-full">
         <div className="flex w-full">
           <Sidebar></Sidebar>
-          <div className="lg:w-[10vw]"></div>
+
           {children}
         </div>
       </body>
