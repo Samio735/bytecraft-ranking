@@ -1,3 +1,4 @@
+import { BACKEND_DOMAIN } from "@/config";
 import {
   Button,
   Card,
@@ -104,7 +105,7 @@ function NewActivity({ loginState, activitiesDispatch }) {
       type: "setError",
       payload: "sending",
     });
-    const response = await fetch(`http://localhost:9000/api/activities/`, {
+    const response = await fetch(`${BACKEND_DOMAIN}/activities/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
