@@ -24,7 +24,7 @@ function Sidebar() {
   return (
     <div>
       <IconButton
-        className={`xl:hidden fixed  left-6 top-6 ${
+        className={`2xl:hidden fixed  left-6 top-6 ${
           openNav && "rotate-90"
         }  z-50 p-4`}
         onClick={() => setOpenNav(!openNav)}
@@ -49,14 +49,14 @@ function Sidebar() {
       <Card
         className={`h-[calc(100vh-2rem)]   ${
           !openNav && "-translate-x-[70vw]"
-        } xl:translate-x-0 w-full  fixed max-w-[20rem] p-4 shadow-xl    z-40   shadow-blue-gray-900/5`}
+        } 2xl:translate-x-0 w-full  fixed max-w-[20rem] p-4 shadow-xl    z-40   shadow-blue-gray-900/5`}
       >
-        <div className="mb-2 p-4  hidden xl:block">
+        <div className="mb-2 p-4  hidden 2xl:block">
           <Typography variant="h5" color="blue-gray">
             Bytecraft
           </Typography>
         </div>
-        <List className=" xl:block">
+        <List className=" 2xl:block">
           <Link href={"/"}>
             <ListItem>Dashboard</ListItem>
           </Link>
