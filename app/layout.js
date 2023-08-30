@@ -12,6 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="flex  w-full">
         <Sidebar></Sidebar>
+        <div className="lg:w-[10vw]"></div>
         {children}
       </body>
     </html>
