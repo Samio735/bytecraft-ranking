@@ -1,7 +1,7 @@
-import { Card, Typography } from "@material-tailwind/react";
+import { Card, Typography, Chip } from "@material-tailwind/react";
 
 function PointsTable({ members }) {
-  const TABLE_HEAD = ["Name", "Points"];
+  const TABLE_HEAD = ["", "Name", "Points"];
   return (
     <Card className=" overflow-scroll max-w-2xl w-full  ">
       <table className="w-full min-w-max table-auto text-left">
@@ -30,6 +30,16 @@ function PointsTable({ members }) {
 
             return (
               <tr key={id}>
+                <td className={classes}>
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal"
+                  >
+                    {index + 1}
+                  </Typography>
+                </td>
+
                 <td className={classes}>
                   <Typography
                     variant="small"

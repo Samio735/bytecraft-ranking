@@ -9,8 +9,9 @@ function AssignTable({
   activitiesDispatch,
 }) {
   const TABLE_HEAD = ["Assign the acitvity to members", ""];
-
+  console.log(currentActivity);
   async function assignMember(MemberId, ActivityId) {
+    console.log(MemberId, ActivityId);
     activitiesDispatch({ type: "setisLoading", payload: true });
     const response = await fetch(`${BACKEND_DOMAIN}/assign-member/`, {
       method: "POST",
@@ -83,10 +84,12 @@ function AssignTable({
           </tr>
         </thead>
         <tbody className="">
-          {members.map(({ name, points, id }, index) => {
+          {members.map(({ name, id }, index) => {
             const isLast = index === members.length - 1;
             const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
-            const isAssigned = currentActivity.members.includes(id);
+            const isAssigned =
+              currentActivity.members.filter((member) => member.id === id)
+                .length > 0;
             return (
               <tr key={id}>
                 <td className={classes}>
@@ -102,6 +105,7 @@ function AssignTable({
                 <td className={classes}>
                   <Switch
                     checked={isAssigned}
+                    onChange={() => {}}
                     onClick={() => {
                       !isAssigned
                         ? assignMember(id, currentActivity.id)

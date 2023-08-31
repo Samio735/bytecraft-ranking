@@ -30,7 +30,7 @@ function Login({ loginDispatch, loginState }) {
       });
 
       const data = await response.json();
-
+      console.log(data);
       setIsLoading(false);
 
       if (data.isLogedin) {
