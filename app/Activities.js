@@ -58,6 +58,7 @@ function Activities({ loginState, loginDispatch }) {
     );
     const data = await response.json();
     activitiesDispatch({ type: "setError", payload: data.error });
+    console.log(data);
 
     return data;
   }
