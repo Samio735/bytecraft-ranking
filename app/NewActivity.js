@@ -107,6 +107,7 @@ function NewActivity({ loginState, activitiesDispatch }) {
       });
       return;
     }
+
     newActivityDispatch({
       type: "setSending",
       payload: true,
@@ -228,6 +229,27 @@ function NewActivity({ loginState, activitiesDispatch }) {
                 </div>
               </>
             )}
+            {newActivityState.type === "meet" && (
+              <>
+                <div
+                  className="flex gap-10"
+                  onChange={(e) =>
+                    newActivityDispatch({
+                      type: "setImportance",
+                      payload: e.target.value,
+                    })
+                  }
+                >
+                  <Radio
+                    name="importance"
+                    value={"obligatory"}
+                    label="Obligatory (-10 to absents)"
+                    defaultChecked
+                  />
+                  <Radio name="importance" value={""} label="Not Obligatory" />
+                </div>
+              </>
+            )}
 
             <div className="">Activity Points : {newActivityState.points}</div>
             <p className="text-red-400">{newActivityState.error}</p>
@@ -250,7 +272,10 @@ function NewActivity({ loginState, activitiesDispatch }) {
           </Card>
           <div
             className="bg-black  opacity-80 w-full h-full fixed z-10 "
-            onClick={() => setcreatingNewActivity(false)}
+            onClick={() => {
+              newActivityDispatch({ type: "reset" });
+              setcreatingNewActivity(false);
+            }}
           ></div>
         </div>
       )}
