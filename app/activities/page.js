@@ -15,7 +15,7 @@ async function Members() {
       <h1 className="w-full text-center my-8 text-xl font-bold">
         All activities
       </h1>
-      <Table activities={activities.activities} />
+      <Table activities={activities.activities.reverse()} />
     </div>
   );
 }
