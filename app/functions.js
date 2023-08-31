@@ -6,7 +6,6 @@ export async function getMembers(department, setLoading) {
   );
   const data = await response.json();
   if (setLoading) setLoading(false);
-  console.log(data);
 
   return data;
 }

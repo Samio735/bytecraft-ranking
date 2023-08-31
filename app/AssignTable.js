@@ -9,9 +9,8 @@ function AssignTable({
   activitiesDispatch,
 }) {
   const TABLE_HEAD = ["Assign the acitvity to members", ""];
-  console.log(currentActivity);
+
   async function assignMember(MemberId, ActivityId) {
-    console.log(MemberId, ActivityId);
     activitiesDispatch({ type: "setisLoading", payload: true });
     const response = await fetch(`${BACKEND_DOMAIN}/assign-member/`, {
       method: "POST",
@@ -53,7 +52,7 @@ function AssignTable({
     });
     activitiesDispatch({ type: "setisLoading", payload: false });
     const data = await response.json();
-    console.log(data);
+
     activitiesDispatch({ type: "setActivities", payload: data.activities });
     activitiesDispatch({ type: "setError", payload: "" });
     activitiesDispatch({ type: "setCurrentActivity", payload: data.activity });

@@ -8,9 +8,7 @@ async function Members() {
       cache: "no-store",
     });
     activities = await response.json();
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 
   return (
     <div className="w-full">

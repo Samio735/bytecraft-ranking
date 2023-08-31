@@ -6,7 +6,6 @@ import MembersLeaderboard from "./Members";
 import { BACKEND_DOMAIN } from "@/config";
 
 function page() {
-  console.log(process.env.BACKEND_DOMAIN);
   const LoginReducer = (state, action) => {
     switch (action.type) {
       case "setDepartment": {
