@@ -5,7 +5,7 @@ import { useState } from "react";
 import AssignTable from "./AssignTable";
 import ActivityInfo from "./ActivityInfo";
 import DeleteActivtiy from "./DeleteActivtiy";
-import FinishActivity from "./finishActivity";
+import FinishActivity from "./FinishActivity";
 
 function EditingActivity({ editingActivity, setEditingActivity }) {
   const [isLoading, setIsLoading] = useState(false);
