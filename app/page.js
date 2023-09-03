@@ -1,9 +1,16 @@
 "use client";
-import { useReducer } from "react";
+import { useReducer, createContext, useContext } from "react";
 import Login from "./Login";
 import Activities from "./Activities";
 import MembersLeaderboard from "./Members";
 import { BACKEND_DOMAIN } from "@/config";
+import Dashboard from "./Dashboard";
+export const loginContext = createContext({
+  isLogedin: false,
+  department: "development",
+  password: "",
+  error: "",
+});
 
 function page() {
   const LoginReducer = (state, action) => {
@@ -17,62 +24,29 @@ function page() {
       case "setIsLogedin": {
         return { ...state, isLogedin: action.payload };
       }
-      case "setError": {
-        return { ...state, error: action.payload };
-      }
-      case "setMembers": {
-        return { ...state, members: action.payload };
-      }
-      case "setMembersLoading":
+      case "setError":
         {
-          return { ...state, membersLaoding: action.payload };
+          return { ...state, error: action.payload };
         }
 
         throw Error("Unknown action: " + action.type);
     }
   };
-  const [loginState, loginDispatch] = useReducer(LoginReducer, {
+
+  const useLoginReducer = useReducer(LoginReducer, {
     isLogedin: false,
     department: "development",
     password: "",
     error: "",
-    members: [],
-    membersLaoding: false,
-  });
-  const ActivitiesReducer = (state, action) => {
-    switch (action.type) {
-      case "setActivities": {
-        return { ...state, activities: action.payload };
-      }
-    }
-  };
-  const [activitiesState, activitiesDispatch] = useReducer(ActivitiesReducer, {
-    activities: [],
   });
 
   return (
     <div className="m-4 flex w-full flex-col items-center ">
       <div className="max-w-2xl  w-full">
         <div></div>
-        {!loginState.isLogedin && (
-          <Login
-            loginDispatch={loginDispatch}
-            loginState={loginState}
-            LoginReducer={LoginReducer}
-          ></Login>
-        )}
-        {loginState.isLogedin && (
-          <>
-            <Activities
-              loginState={loginState}
-              loginDispatch={loginDispatch}
-            ></Activities>
-
-            {!loginState.membersLaoding && (
-              <MembersLeaderboard loginState={loginState}></MembersLeaderboard>
-            )}
-          </>
-        )}
+        <loginContext.Provider value={useLoginReducer}>
+          <Dashboard />
+        </loginContext.Provider>
       </div>
     </div>
   );

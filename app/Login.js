@@ -10,47 +10,23 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
-import { getMembers } from "./functions";
-
-function Login({ loginDispatch, loginState }) {
+import { getMembers, login } from "./functions";
+import { loginContext } from "./page";
+import { useContext } from "react";
+function Login() {
+  const [loginState, loginDispatch] = useContext(loginContext);
   const [isLoading, setIsLoading] = useState(false);
-
-  async function login() {
+  async function loginSubmit(e) {
+    e.preventDefault();
     setIsLoading(true);
-    try {
-      const response = await fetch(`${BACKEND_DOMAIN}/login/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          department: loginState.department,
-          password: loginState.password,
-        }),
-      });
-
-      const data = await response.json();
-
-      setIsLoading(false);
-
-      if (data.isLogedin) {
-        loginDispatch({ type: "setIsLogedin", payload: true });
-        loginDispatch({ type: "setMembersLoading", payload: true });
-        const members = await getMembers(loginState.department);
-        loginDispatch({ type: "setMembers", payload: members.members });
-        loginDispatch({ type: "setMembersLoading", payload: false });
-      }
-      if (!data.isLogedin) {
-        loginDispatch({ type: "setIsLogedin", payload: false });
-        loginDispatch({ type: "setError", payload: data.error });
-      }
-    } catch (error) {
-      loginDispatch({
-        type: "setError",
-        payload: "Oups, Can't connect to sever",
-      });
-      setIsLoading(false);
+    const response = await login(loginState.department, loginState.password);
+    if (response.isLogedin) {
+      loginDispatch({ type: "setIsLogedin", payload: true });
     }
+    if (response.error) {
+      loginDispatch({ type: "setError", payload: response.error });
+    }
+    setIsLoading(false);
   }
   return (
     <div>
@@ -87,8 +63,7 @@ function Login({ loginDispatch, loginState }) {
             type="submit"
             className="mt-4"
             onClick={(e) => {
-              login();
-              e.preventDefault();
+              loginSubmit(e);
             }}
           >
             {!isLoading && "Login"}{" "}
@@ -104,7 +79,6 @@ function Login({ loginDispatch, loginState }) {
           </Button>
         </Card>
       </form>
-      {loginState.isLogedin && "logedin"}
     </div>
   );
 }

@@ -12,44 +12,7 @@ import { ThreeDots } from "react-loader-spinner";
 
 function NewActivity({ loginState, activitiesDispatch }) {
   const [creatingNewActivity, setcreatingNewActivity] = useState(false);
-  function NewActivityReducer(state, action) {
-    switch (action.type) {
-      case "setname": {
-        return { ...state, name: action.payload };
-      }
-      case "setType": {
-        return { ...state, type: action.payload };
-      }
-      case "setError": {
-        return { ...state, error: action.payload };
-      }
-      case "setImportance": {
-        return { ...state, importance: action.payload };
-      }
-      case "setTime": {
-        return { ...state, time: action.payload };
-      }
-      case "setPoints": {
-        return { ...state, points: action.payload };
-      }
-      case "setSending": {
-        return { ...state, sending: action.payload };
-      }
-      case "reset": {
-        return {
-          name: "",
-          type: "",
-          importance: "training",
-          time: "quick",
-          points: 0,
-          error: "",
-          sending: false,
-        };
-      }
-      default:
-        throw Error("Unknown action: " + action.type);
-    }
-  }
+
   const [newActivityState, newActivityDispatch] = useReducer(
     NewActivityReducer,
     {
