@@ -1,4 +1,5 @@
 import { BACKEND_DOMAIN } from "@/config";
+import useActivities from "@/hooks/useActivities";
 import {
   Button,
   Card,
@@ -9,10 +10,77 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useReducer, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
+import { useContext } from "react";
+import { loginContext } from "./page";
+import { newActivity } from "./functions";
 
-function NewActivity({ loginState, activitiesDispatch }) {
+function calculatePoints(activtity) {
+  let points = 0;
+  if (activtity.type === "meet") {
+    points = 10;
+  }
+  if (activtity.type === "task") {
+    points = 5;
+    if (activtity.importance === "important") {
+      points = points + 5;
+    }
+    if (activtity.time === "takes-time") {
+      points = points + 5;
+    }
+    if (activtity.time === "ongoing") {
+      points = points + 10;
+    }
+  }
+  if (activtity.type === "part") {
+    points = 30;
+  }
+  return points;
+}
+
+function NewActivity() {
+  const [loginState] = useContext(loginContext);
+  const { activities, isLoading, mutateActivities, error } = useActivities(
+    loginState.department
+  );
   const [creatingNewActivity, setcreatingNewActivity] = useState(false);
-
+  function NewActivityReducer(state, action) {
+    switch (action.type) {
+      case "setname": {
+        return { ...state, name: action.payload };
+      }
+      case "setType": {
+        return { ...state, type: action.payload };
+      }
+      case "setError": {
+        return { ...state, error: action.payload };
+      }
+      case "setImportance": {
+        return { ...state, importance: action.payload };
+      }
+      case "setTime": {
+        return { ...state, time: action.payload };
+      }
+      case "setPoints": {
+        return { ...state, points: action.payload };
+      }
+      case "setSending": {
+        return { ...state, sending: action.payload };
+      }
+      case "reset": {
+        return {
+          name: "",
+          type: "",
+          importance: "training",
+          time: "quick",
+          points: 0,
+          error: "",
+          sending: false,
+        };
+      }
+      default:
+        throw Error("Unknown action: " + action.type);
+    }
+  }
   const [newActivityState, newActivityDispatch] = useReducer(
     NewActivityReducer,
     {
@@ -25,37 +93,19 @@ function NewActivity({ loginState, activitiesDispatch }) {
       sending: false,
     }
   );
-  const calculatePoints = () => {
-    let points = 0;
-    if (newActivityState.type === "meet") {
-      points = 10;
-    }
-    if (newActivityState.type === "task") {
-      points = 5;
-      if (newActivityState.importance === "important") {
-        points = points + 5;
-      }
-      if (newActivityState.time === "takes-time") {
-        points = points + 5;
-      }
-      if (newActivityState.time === "ongoing") {
-        points = points + 10;
-      }
-    }
-    if (newActivityState.type === "part") {
-      points = 30;
-    }
-    return points;
-  };
+
   useEffect(() => {
-    newActivityDispatch({ type: "setPoints", payload: calculatePoints() });
+    newActivityDispatch({
+      type: "setPoints",
+      payload: calculatePoints(newActivityState),
+    });
   }, [
     newActivityState.type,
     newActivityState.importance,
     newActivityState.time,
   ]);
 
-  async function submit() {
+  async function submitNewActivity() {
     if (newActivityState.name === "") {
       newActivityDispatch({
         type: "setError",
@@ -75,47 +125,29 @@ function NewActivity({ loginState, activitiesDispatch }) {
       type: "setSending",
       payload: true,
     });
-    const response = await fetch(`${BACKEND_DOMAIN}/activities/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: newActivityState.name,
-        type: newActivityState.type,
-        importance: newActivityState.importance,
-        time: newActivityState.time,
-        department: loginState.department,
-        password: loginState.password,
-        members: [],
-      }),
-    });
-    const data = await response.json();
-    if (data.error) {
-      newActivityDispatch({
-        type: "setError",
-        payload: data.status,
-      });
-      return;
-    }
-    newActivityDispatch({
-      type: "setError",
-      payload: "Activity Created",
-    });
-    console.log(data);
+
+    await mutateActivities(
+      newActivity(newActivityState, loginState.department, loginState.password),
+      { optimisticData: [...activities, newActivityState] }
+    );
     setcreatingNewActivity(false);
+    newActivityDispatch({ type: "setError", payload: error });
     newActivityDispatch({ type: "reset" });
-    activitiesDispatch({ type: "setActivities", payload: data.activities });
   }
 
   return (
     <div>
-      <Button
-        className=" w-full "
-        onClick={() => setcreatingNewActivity((state) => !state)}
-      >
-        Create New Activity
-      </Button>
+      {!isLoading && (
+        <Button
+          className=" w-full "
+          onClick={() => setcreatingNewActivity((state) => !state)}
+        >
+          Create New Activity
+        </Button>
+      )}
+      {isLoading && (
+        <div className="w-full h-10 rounded-md bg-gray-400 animate-pulse"></div>
+      )}
       {creatingNewActivity && (
         <div className="fixed  w-screen h-screen  flex left-0 top-0 items-center z-10 justify-center">
           <Card className="flex flex-collumn gap-4 p-4  w-[90vw] max-w-lg z-20">
@@ -219,7 +251,7 @@ function NewActivity({ loginState, activitiesDispatch }) {
             <Button
               className="mb-4"
               disabled={newActivityState.sending}
-              onClick={() => submit()}
+              onClick={() => submitNewActivity()}
             >
               {!newActivityState.sending && "Create"}
               {newActivityState.sending && (

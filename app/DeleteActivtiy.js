@@ -20,10 +20,9 @@ function DeleteActivtiy({ activity, setEditingActivity }) {
   const { mutateActivities } = useActivities(loginState.department);
   async function submitDelete(id, department, password) {
     setIsLoading(true);
-    await deleteActivity(id, department, password);
+    await mutateActivities(deleteActivity(id, department, password));
     setIsLoading(false);
     setdeleteOpen(!deleteOpen);
-    mutateActivities();
     setEditingActivity({ isOpen: false, activity: {} });
   }
 

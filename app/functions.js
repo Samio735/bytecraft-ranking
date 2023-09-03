@@ -54,7 +54,7 @@ export async function deleteActivity(id, department, password) {
   try {
     const data = await response.json();
     console.log(data);
-    return data;
+    return data.activities;
   } catch (e) {
     console.log(e);
   }
@@ -76,10 +76,30 @@ export async function finishActivity(id, department, password) {
   });
   try {
     const data = await response.json();
-    return data;
+    return data.activities;
   } catch (e) {
     console.log(e);
   }
 
   return;
+}
+
+export async function newActivity(activity, department, password) {
+  const response = await fetch(`${BACKEND_DOMAIN}/activities/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: activity.name,
+      type: activity.type,
+      importance: activity.importance,
+      time: activity.time,
+      department: department,
+      password: password,
+      members: [],
+    }),
+  });
+  const data = await response.json();
+  return data.activities;
 }
