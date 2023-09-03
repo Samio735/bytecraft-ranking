@@ -6,7 +6,7 @@ import useMembers from "@/hooks/useMembers";
 
 function MembersLeaderboard() {
   const [loginState] = useContext(loginContext);
-  const { isLoading, members } = useMembers(loginState.department);
+  const { isLoading, members, error } = useMembers(loginState.department);
   return (
     <>
       {isLoading && (
@@ -65,10 +65,13 @@ function MembersLeaderboard() {
           </h1>
 
           <div className="flex justify-center items-center mb-6">
-            {!isLoading && <PointsTable members={members}></PointsTable>}
+            {!isLoading && !error && (
+              <PointsTable members={members}></PointsTable>
+            )}
           </div>
         </div>
       )}
+      {error && "Can't load the member rankings"}
     </>
   );
 }

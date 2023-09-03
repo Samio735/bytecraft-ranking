@@ -24,6 +24,12 @@ export async function getActivities(key) {
   return data.activities;
 }
 
+export async function getActivity(key) {
+  const response = await fetch(`${BACKEND_DOMAIN}${key}`);
+  const data = await response.json();
+  return data.activity;
+}
+
 export async function login(department, password) {
   const response = await fetch(`${BACKEND_DOMAIN}/login/`, {
     method: "POST",
@@ -53,7 +59,6 @@ export async function deleteActivity(id, department, password) {
   });
   try {
     const data = await response.json();
-    console.log(data);
     return data.activities;
   } catch (e) {
     console.log(e);
@@ -102,4 +107,50 @@ export async function newActivity(activity, department, password) {
   });
   const data = await response.json();
   return data.activities;
+}
+
+export async function assignMember(MemberId, ActivityId, department, password) {
+  const response = await fetch(`${BACKEND_DOMAIN}/assign-member/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      member: MemberId,
+      activity: ActivityId,
+      department: department,
+      password: password,
+    }),
+  });
+  const data = await response.json();
+  return data.activity;
+}
+
+export async function unassignMember(
+  MemberId,
+  ActivityId,
+  department,
+  password
+) {
+  const response = await fetch(`${BACKEND_DOMAIN}/unassign-member/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      member: MemberId,
+      activity: ActivityId,
+      department: department,
+      password: password,
+    }),
+  });
+  console.log("unassigned ");
+
+  const data = await response.json();
+
+  return data.activity;
+}
+
+export function checkIsAssigned(id, activity) {
+  return activity.members.filter((member) => member.id === id).length > 0;
 }

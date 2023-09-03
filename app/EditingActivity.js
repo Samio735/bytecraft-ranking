@@ -34,25 +34,6 @@ function EditingActivity({ editingActivity, setEditingActivity }) {
             setEditingActivity={setEditingActivity}
             editingActivity={editingActivity}
           />
-
-          <div className="flex gap-2 w-full justify-end  ">
-            <Button
-              onClick={() =>
-                setEditingActivity({ isOpen: false, activity: {} })
-              }
-            >
-              {!isLoading && "SAVE AND CONTINUE"}{" "}
-              {isLoading && (
-                <div className="w-32 flex justify-center h-full ">
-                  <ThreeDots
-                    width={"40px"}
-                    height={"15px"}
-                    color="white"
-                  ></ThreeDots>
-                </div>
-              )}
-            </Button>
-          </div>
         </Card>
 
         <div
