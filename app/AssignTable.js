@@ -112,11 +112,11 @@ function AssignTable({ editingActivity, setEditingActivity }) {
                   return (
                     <tr key={index}>
                       <td className={classes}>
-                        <div className="h-6 bg-gray-200 rounded-full dark:bg-gray-700 w-4 "></div>
+                        <div className="h-6 bg-gray-200 rounded-full animate pulse dark:bg-gray-700 w-40 "></div>
                       </td>
 
                       <td className={classes}>
-                        <div className="h-6 bg-gray-200 rounded-full dark:bg-gray-700 w-8 ms-16 "></div>
+                        <div className="h-6 bg-gray-200 rounded-full animate pulse dark:bg-gray-700 w-8 ms-16 "></div>
                       </td>
                     </tr>
                   );
