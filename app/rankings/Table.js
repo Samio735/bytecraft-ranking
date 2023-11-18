@@ -2,7 +2,7 @@
 import { Card, Typography } from "@material-tailwind/react";
 
 function Table({ members }) {
-  const TABLE_HEAD = ["", "Name", "Department", "Points"];
+  const TABLE_HEAD = ["", "Name", "Points"];
 
   return (
     <div className="flex justify-center items-center mb-6">
@@ -53,7 +53,7 @@ function Table({ members }) {
                       {name}
                     </Typography>
                   </td>
-                  <td className={classes}>
+                  {/* <td className={classes}>
                     <Typography
                       variant="small"
                       color="blue-gray"
@@ -61,7 +61,7 @@ function Table({ members }) {
                     >
                       {department}
                     </Typography>
-                  </td>
+                  </td> */}
                   <td className={classes}>
                     <Typography
                       variant="small"

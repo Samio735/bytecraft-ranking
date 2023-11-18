@@ -73,7 +73,7 @@ function Sidebar() {
                 className="border-b-0 p-3"
               >
                 <Typography color="blue-gray" className="mr-auto font-normal">
-                  Departments
+                  Departments and Teams
                 </Typography>
                 <ListItemSuffix>
                   <svg
@@ -112,6 +112,15 @@ function Sidebar() {
                 </Link>
                 <Link href={"/departments/multimedia"}>
                   <ListItem>Multimedia</ListItem>
+                </Link>
+                <Link href={"/departments/activities"}>
+                  <ListItem>Activities</ListItem>
+                </Link>
+                <Link href={"/departments/game-dev"}>
+                  <ListItem>Game Dev</ListItem>
+                </Link>
+                <Link href={"/departments/uiux"}>
+                  <ListItem>UI/UX</ListItem>
                 </Link>
               </List>
             </AccordionBody>

@@ -47,6 +47,9 @@ function Login() {
             <Option value="communication">Communcation</Option>
             <Option value="relex-logistics">Relex and logistics</Option>
             <Option value="multimedia">Multimedia</Option>
+            <Option value="game-dev">Game Dev</Option>
+            <Option value="uiux">UI/UX</Option>
+            <Option value="activities">Activties</Option>
           </Select>
           <Input
             label="password"
